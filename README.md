@@ -1,0 +1,1 @@
+Qucik 'n dirty solutions
