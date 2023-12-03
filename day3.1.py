@@ -8,41 +8,36 @@ f = open("input.txt", "r").readlines()
 lenLines = len(f)
 
 def isMatch(number, numberIndex, currentLine):
-  # next to left, next to right, above, below, above diag right, above diag left, below diag left below diag right
-  if(numberIndex > 0 and re.search("([^0-9.])", f[currentLine][numberIndex-1])):
-    # right
+  left = 0
+  right = numberIndex + len(number)
+  if(numberIndex-1>0):
+    left = numberIndex-1
+
+  if(re.search("([^0-9.])", f[currentLine][left].strip())):
     return True
-  if(numberIndex < len(f[currentLine]) and re.search("([^0-9.])", f[currentLine][numberIndex + len(number)])):
-    # left
+  if(re.search("([^0-9.])", f[currentLine][right].strip())):
     return True
-  if(currentLine < lenLines-1 and re.search("([^0-9.])", f[currentLine+1][numberIndex:numberIndex + len(number)])):
-    # below
+  if(currentLine < lenLines-1 and re.search("([^0-9.])", f[currentLine+1][left:right+1].strip())):
     return True
-  if(currentLine < lenLines-1 and re.search("([^0-9.])", f[currentLine+1][numberIndex + len(number)])):
-    # below right
-    return True
-  if(currentLine < lenLines-1 and re.search("([^0-9.])", f[currentLine+1][numberIndex - 1])):
-    # below left
-    return True
-  if(currentLine > 0 and re.search("([^0-9.])", f[currentLine-1][numberIndex:numberIndex + len(number)])):
-    # above
-    return True
-  if(currentLine > 0 and re.search("([^0-9.])", f[currentLine-1][numberIndex - 1])):
-    # above left
-    return True
-  if(currentLine > 0 and re.search("([^0-9.])", f[currentLine-1][numberIndex + len(number)])):
-    # above right
+  if(currentLine > 0 and re.search("([^0-9.])", f[currentLine-1][left:right+1].strip())):
     return True
   return False
   
 for x in f:
   numbers = re.findall("\d+", x.strip())
+  searchIndex = -1
   for number in numbers:
     if current > lenLines:
       break
-    if(isMatch(number, x.index(number), current)):
+    try:
+      loc = x.index(number, searchIndex+1)
+    except ValueError:
+      break
+    else:
+      searchIndex = loc+1
+    if(isMatch(number, loc, current)):
       sum += int(number)
   current+=1
-print(sum)
+print(sum) 
 
 
