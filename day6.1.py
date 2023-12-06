@@ -14,7 +14,6 @@ for index, time in enumerate(times):
     timeDistance[int(time)] = int(distances[index])
 
 for entry in timeDistance:
-    winningWays = 0
     for i in range(0,entry):
         if i * (entry-i) > timeDistance[entry]:
             totalWinnings *= entry+1 - i*2
