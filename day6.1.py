@@ -2,9 +2,9 @@ import re
 import math
 
 timeDistance = {}
-winnings = []
+totalWinnings = 1
 
-f = open("input.txt", "r")
+f = open("test.txt", "r")
 
 lines = f.readlines()
 times = lines[0].strip().split(":")[1].split()
@@ -17,7 +17,6 @@ for entry in timeDistance:
     winningWays = 0
     for i in range(0,entry):
         if i * (entry-i) > timeDistance[entry]:
-            winningWays+=1
-    winnings.append(winningWays)
-
-print(math.prod(winnings))
+            totalWinnings *= entry+1 - i*2
+            break
+print(totalWinnings)
